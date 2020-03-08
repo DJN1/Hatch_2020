@@ -7,5 +7,9 @@ port = 5000
 def hello_world():
     return render_template("index.html")
 
+@app.route('/pedigrees')
+def pedigrees():
+    return render_template("pedigree.html")
+
 
 app.run(port=port, debug=True)

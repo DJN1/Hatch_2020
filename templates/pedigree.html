@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='materialize.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
+</head>
+
+<body>
+
+
+    <ul id="slide-out" class="sidenav sidenav-fixed" id="sideNav">
+        <li><a href="#!" class="mainF" id="F1">F1</a></li>
+        <li><a href="#!" class="mainF" id="F2">F2</a></li>
+        <li><a href="#!" class="mainF" id="F3">F3</a></li>
+        <li><a href="#!" class="mainF" id="F4">F4</a></li>
+        <li><a href="#!" class="mainF" id="F5">F5</a></li>
+        <li><a href="#!" class="mainF" id="F6">F6</a></li>
+        <li><a href="#!" class="mainF" id="F7">F7</a></li>
+        <li><a href="#!" class="mainF" id="F8">F8</a></li>
+        <li><a href="#!" class="mainF" id="F9">F9</a></li>
+        <li><a href="#!" class="mainF" id="F10">F10</a></li>
+        <li><a href="#!" class="mainF" id="F11">F11</a></li>
+        <li><a href="#!" class="mainF" id="F12">F12</a></li>
+        <li><a href="#!" class="mainF" id="F13">F13</a></li>
+        <li><a href="#!" class="mainF" id="F14">F14</a></li>
+        <li><a href="#!" class="mainF" id="F15">F15</a></li>
+        <li><a href="#!" class="mainF" id="F16">F16</a></li>
+        <li><a href="#!" class="mainF" id="F17">F17</a></li>
+        <li><a href="#!" class="mainF" id="F18">F18</a></li>
+        <li><a href="#!" class="mainF" id="F19">F19</a></li>
+        <li><a href="#!" class="mainF" id="F20">F20</a></li>
+    </ul>
+
+    <div class="wrapper">
+        <nav id="navbar">
+            <a href="/" class="brand-logo center" id="navA"><img src="/static/img/gt150.png" id="geneTreeLogo" /></a>
+        </nav>
+
+        <div class="container">
+            <h3 id='pediHeading' class="center-align"></h3>
+            <div id="pedigree"></div>
+            <div id="additionalOpts"></div>
+        </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <script>
+        jQuery(document).ready(function () {
+            jQuery('.sidenav').sidenav();
+            jQuery('.collapsible').collapsible();
+            jQuery("#pedigree").append("<img src='/static/img/F1.svg' class='treeImg'/>");
+            jQuery("#pediHeading").html("F1");
+            jQuery(".mainF").click(function () {
+                jQuery("#additionalOpts").empty();
+                jQuery("#pedigree").empty();
+                let self = $(this)[0];
+                console.log(self.id);
+                let source = `/static/img/${self.id}.svg`;
+                let imgEl = `<img src='${source}' class='treeImg'/>`
+                jQuery("#pediHeading").html(self.id);
+                jQuery("#pedigree").append(imgEl);
+                if (self.id == "F3") {
+                    jQuery("#additionalOpts").append(
+                        "<button class='btn btn-large' id='addPedigree'>Combine with F17</button>")
+                }
+                if (self.id == "F4") {
+                    jQuery("#additionalOpts").append(
+                        "<button class='btn btn-large' id='addPedigree'>Combine with F11 & F20</button>"
+                        );
+                }
+                if (self.id == "F11") {
+                    jQuery("#additionalOpts").append(
+                        "<button class='btn btn-large' id='addPedigree'>Combine with F4 & F20</button>"
+                        );
+                }
+                if (self.id == "F17") {
+                    jQuery("#additionalOpts").append(
+                        "<button class='btn btn-large' id='addPedigree'>Combine with F3</button>")
+                }
+                if (self.id == "F20") {
+                    jQuery("#additionalOpts").append(
+                        "<button class='btn btn-large' id='addPedigree'>Combine with F4 & F11</button>"
+                        );
+
+                }
+                jQuery('#addPedigree').click(function () {
+                    let self = $(this);
+                    console.log(self);
+                    let id = self[0].innerText;
+                    console.log(self[0].innerText);
+                    let newImg = "";
+                    if (id.includes("F3") || id.includes("F17")) {
+                        jQuery("#additionalOpts").empty();
+                        jQuery("#pedigree").empty();
+                        jQuery("#pediHeading").html("F3 + F17")
+                        jQuery("#pedigree").append(
+                            "<img src='/static/img/F3-F17.svg' class='treeImg'/>");
+                    } else {
+                        jQuery("#additionalOpts").empty();
+                        jQuery("#pedigree").empty();
+                        jQuery("#pediHeading").html("F4 + F11 + F20");
+                        jQuery("#pedigree").append(
+                            "<img src='/static/img/F11-F20-F4.svg' class='treeImg'/>");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
