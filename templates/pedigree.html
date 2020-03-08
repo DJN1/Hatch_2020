@@ -106,12 +106,14 @@
                         jQuery("#additionalOpts").empty();
                         jQuery("#pedigree").empty();
                         jQuery("#pediHeading").html("F3 + F17")
+                        jQuery("#pedigree").append("<h4>Confidence: 95%</h4>");
                         jQuery("#pedigree").append(
                             "<img src='/static/img/F3-F17.svg' class='treeImg'/>");
                     } else {
                         jQuery("#additionalOpts").empty();
                         jQuery("#pedigree").empty();
                         jQuery("#pediHeading").html("F4 + F11 + F20");
+                        jQuery("#pedigree").append("<h4>Confidence: 75%</h4>")
                         jQuery("#pedigree").append(
                             "<img src='/static/img/F11-F20-F4.svg' class='treeImg'/>");
                     }

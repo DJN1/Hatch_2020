@@ -1,0 +1,17 @@
+// f1.txt
+digraph grandparent {
+	subgraph parent {
+	}
+	subgraph self {
+		Mate [color=pink shape=circle]
+		Mate -> Matedot [dir=none]
+		Self [color=pink shape=circle]
+		Self -> Matedot [dir=none]
+		Mate [color=pink shape=circle]
+	}
+	subgraph child {
+		Child [color=pink shape=circle]
+		Matedot [shape=point]
+		Child -> Matedot [dir=none]
+	}
+}

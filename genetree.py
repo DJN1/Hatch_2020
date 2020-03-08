@@ -424,28 +424,40 @@ def mapRelationsLevel1(lines, done):
     if "Child 1" not in done and "Child 1" in lines:
         #go up and delete relation
         done.append("Child 1")
-        if lines.get("Self").sex == 'M':
-            if "Mate" in lines:
-                lines.update( {"Child 1": Person("Mate", "Self", None, lines.get("Child 1")) } )
+        try:
+            if lines.get("Self").sex == 'M':
+                if "Mate" in lines:
+                    lines.update( {"Child 1": Person("Mate", "Self", None, lines.get("Child 1")) } )
+                else:
+                    lines.update( {"Child 1": Person(None, "Self", None, lines.get("Child 1")) } )
             else:
-                lines.update( {"Child 1": Person(None, "Self", None, lines.get("Child 1")) } )
-        else:
+                if "Mate" in lines:
+                    lines.update( {"Child 1": Person("Self", "Mate", None, lines.get("Child 1")) } )
+                else:
+                    lines.update( {"Child 1": Person("Self", None, None, lines.get("Child 1")) } )
+        except:
             if "Mate" in lines:
-                lines.update( {"Child 1": Person("Self", "Mate", None, lines.get("Child 1")) } )
+                    lines.update( {"Child 1": Person("Self", "Mate", None, lines.get("Child 1")) } )
             else:
                 lines.update( {"Child 1": Person("Self", None, None, lines.get("Child 1")) } )
         #go up a level
     if "Child 2" not in done and "Child 2" in lines:
         #go up
         done.append("Child 2")
-        if lines.get("Self").sex == 'M':
-            if "Mate" in lines:
-                lines.update( {"Child 2": Person("Mate", "Self", None, lines.get("Child 2")) } )
+        try:
+            if lines.get("Self").sex == 'M':
+                if "Mate" in lines:
+                    lines.update( {"Child 2": Person("Mate", "Self", None, lines.get("Child 2")) } )
+                else:
+                    lines.update( {"Child 2": Person(None, "Self", None, lines.get("Child 2")) } )
             else:
-                lines.update( {"Child 2": Person(None, "Self", None, lines.get("Child 2")) } )
-        else:
+                if "Mate" in lines:
+                    lines.update( {"Child 2": Person(None, "Self", None, lines.get("Child 2")) } )
+                else:
+                    lines.update( {"Child 2": Person("Self", None, None, lines.get("Child 2")) } )
+        except:
             if "Mate" in lines:
-                lines.update( {"Child 2": Person(None, "Self", None, lines.get("Child 2")) } )
+                    lines.update( {"Child 2": Person(None, "Self", None, lines.get("Child 2")) } )
             else:
                 lines.update( {"Child 2": Person("Self", None, None, lines.get("Child 2")) } )
         #go up a level
@@ -466,14 +478,20 @@ def mapRelationsLevel1(lines, done):
     if "Sibling Child" not in done and "Sibling Child" in lines:
         #go up
         done.append("Sibling Child")
-        if lines.get("Sibling").sex == 'M':
-            if "Sibling Mate" in lines:
-                lines.update( {"Sibling Child": Person("Sibling Mate", "Sibling", None, lines.get("Sibling Child")) } )
+        try:
+            if lines.get("Sibling").sex == 'M':
+                if "Sibling Mate" in lines:
+                    lines.update( {"Sibling Child": Person("Sibling Mate", "Sibling", None, lines.get("Sibling Child")) } )
+                else:
+                    lines.update( {"Sibling Child": Person(None, "Sibling", None, lines.get("Sibling Child")) } )
             else:
-                lines.update( {"Sibling Child": Person(None, "Sibling", None, lines.get("Sibling Child")) } )
-        else:
+                if "Sibling Mate" in lines:
+                    lines.update( {"Sibling Child": Person("Sibling", "Sibling Mate", None, lines.get("Sibling Child")) } )
+                else:
+                    lines.update( {"Sibling Child": Person("Sibling", None, None, lines.get("Sibling Child")) } )
+        except:
             if "Sibling Mate" in lines:
-                lines.update( {"Sibling Child": Person("Sibling", "Sibling Mate", None, lines.get("Sibling Child")) } )
+                    lines.update( {"Sibling Child": Person("Sibling", "Sibling Mate", None, lines.get("Sibling Child")) } )
             else:
                 lines.update( {"Sibling Child": Person("Sibling", None, None, lines.get("Sibling Child")) } )
     if "Sibling Child 1" not in done and "Sibling Child 1" in lines:
@@ -557,14 +575,20 @@ def mapRelationsLevel1(lines, done):
     if "Sibling 2 Child 1 (Through Adoption)" not in done and "Sibling 2 Child 1 (Through Adoption)" in lines:
         #go up
         done.append("Sibling 2 Child 1 (Through Adoption)")
-        if lines.get("Sibling 2").sex == 'M':
-            if "Sibling 2 Mate" in lines:
-                lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person("Sibling 2 Mate", "Sibling 2", None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
+        try:
+            if lines.get("Sibling 2").sex == 'M':
+                if "Sibling 2 Mate" in lines:
+                    lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person("Sibling 2 Mate", "Sibling 2", None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
+                else:
+                    lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person(None, "Sibling 2", None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
             else:
-                lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person(None, "Sibling 2", None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
-        else:
+                if "Sibling 2 Mate" in lines:
+                    lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
+                else:
+                    lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person("Sibling 2", None, None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
+        except:
             if "Sibling 2 Mate" in lines:
-                lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
+                    lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
             else:
                 lines.update( {"Sibling 2 Child 1 (Through Adoption)": Person("Sibling 2", None, None, lines.get("Sibling 2 Child 1 (Through Adoption)")) } )
     if "Sibling 2 Child 2" not in done and "Sibling 2 Child 2" in lines:
@@ -583,14 +607,20 @@ def mapRelationsLevel1(lines, done):
     if "Sibling 2 Child 2 (Through Adoption)" not in done and "Sibling 2 Child 2 (Through Adoption)" in lines:
         #go up
         done.append("Sibling 2 Child 2 (Through Adoption)")
-        if lines.get("Sibling 2").sex == 'M':
-            if "Sibling 2 Mate" in lines:
-                lines.update( {"Sibling 2": Person("Sibling 2 Mate", "Sibling 2", None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
+        try:
+            if lines.get("Sibling 2").sex == 'M':
+                if "Sibling 2 Mate" in lines:
+                    lines.update( {"Sibling 2": Person("Sibling 2 Mate", "Sibling 2", None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
+                else:
+                    lines.update( {"Sibling 2": Person(None, "Sibling 2", None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
             else:
-                lines.update( {"Sibling 2": Person(None, "Sibling 2", None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
-        else:
+                if "Sibling 2 Mate" in lines:
+                    lines.update( {"Sibling 2": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
+                else:
+                    lines.update( {"Sibling 2": Person("Sibling 2", None, None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
+        except:
             if "Sibling 2 Mate" in lines:
-                lines.update( {"Sibling 2": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
+                    lines.update( {"Sibling 2": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
             else:
                 lines.update( {"Sibling 2": Person("Sibling 2", None, None, lines.get("Sibling 2 Child 2 (Through Adoption)")) } )
     if "Sibling 2 Child 3" not in done and "Sibling 2 Child 3" in lines:
@@ -610,7 +640,7 @@ def mapRelationsLevel1(lines, done):
 
         
 
-myFile= open( "data/F1.txt", "rU" )
+myFile= open( "data/F6.txt", "rU" )
 lines={}
 next(myFile)
 for aRow in myFile:
@@ -625,7 +655,7 @@ done = []
 mapRelationsLevel1(lines, done)
 print(lines)
 
-grandparent = Digraph(name='grandparent',comment='f1.txt')
+grandparent = Digraph(name='grandparent',comment='f1.txt', format="png")
 parent = Digraph(name = 'parent')
 you = Digraph(name = 'self')
 child = Digraph(name = 'child')
@@ -648,6 +678,7 @@ while p != None:
     elif layer == 3:
         print(p.info.sex)
         grandparent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+    # print("p:{}".format(type(p)))
     if p.mother != None and p.father != None:
         children=lines.get(p.mother).children.copy()
         if layer == 0:
