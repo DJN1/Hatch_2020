@@ -1,5 +1,5 @@
 {
     "python.linting.enabled": true,
     "python.linting.flake8Enabled": true,
-    "python.pythonPath": "usr/bin/python3"
+    "python.pythonPath": "C:\\Users\\David\\Anaconda3\\envs\\hatch\\python.exe"
 }
