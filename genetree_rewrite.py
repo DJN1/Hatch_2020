@@ -1,6 +1,6 @@
 from graphviz import Digraph
 import pandas as pd
-import numpy as np
+# import numpy as np
 
 
 class Person:
@@ -51,20 +51,22 @@ class Info:
 
     def __str__(self):
         out = ''
+        out += "Relation: " + self.relation + "\n"
         out += "Sex: " + self.sex + "\n"
         out += "Living: " + str(self.alive) + "\n"
-        out += "Disease: " + str(self.disease) + "\n"
+        out += "Disease: " + self.disease + "\n"
         out += "Age of Onset: " + str(self.onset) + "\n"
         out += "Age of Death: " + str(self.death) + "\n"
         return out
 
     def __repr__(self):
         out = ''
+        out += "Relation: " + self.relation + "\n"
         out += "Sex: " + self.sex + "\n"
-        out += "Living: " + self.alive + "\n"
-        out += "Disease: " + self.disease + "\n"
-        out += "Age of Onset: " + self.disease + "\n"
-        out += "Age of Death: " + self.death + "\n"
+        out += "Living: " + str(self.alive) + "\n"
+        out += "Disease: " + str(self.disease) + "\n"
+        out += "Age of Onset: " + str(self.onset) + "\n"
+        out += "Age of Death: " + str(self.death) + "\n"
         return out
 
 
@@ -642,7 +644,7 @@ def mapRelationsLevel1(lines, done):
                 lines.update({"Sibling 2": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 3"))})
             else:
                 lines.update({"Sibling 2": Person("Sibling 2", None, None, lines.get("Sibling 2 Child 3"))})
-    mapRelationsLevel2(lines, [])
+    # mapRelationsLevel2(lines, [])
 
 
 fileDF = pd.read_csv("data/F1.csv")
@@ -654,11 +656,20 @@ selfDF = fileDF.iloc[0]
 # selfInfo = Info(selfDF.iloc[0], selfDF.iloc[1], (True if selfDF.iloc[2] == 'Y' else False), selfDF.iloc[3], selfDF.iloc[4], selfDF.iloc[5])
 # print(selfInfo)
 # print(fileDF)
-infoList = []
+infoList = {}
 for index, row in fileDF.iterrows():
-    infoList.append(Info)
+    infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death)
 
 
+# Info(relation, sex, alive, disease, onset, death)
+print(infoList)
+
+done = []
+# mapRelationsLevel1(infoList, done)
+# print(done)
+# for info in infoList:
+#     print("###############################################################")
+#     print(info.relation)
 # myFile = open("data/F1.txt", "r")
 # lines = {}
 # next(myFile)
@@ -674,13 +685,15 @@ for index, row in fileDF.iterrows():
 # mapRelationsLevel1(lines, done)
 # print(lines)
 
-# grandparent = Digraph(name='grandparent', comment='f1.txt', format="png")
-# parent = Digraph(name='parent')
-# you = Digraph(name='self')
-# child = Digraph(name='child')
+grandparent = Digraph(name='grandparent', comment='f1.txt', format="png")
+parent = Digraph(name='parent')
+you = Digraph(name='self')
+child = Digraph(name='child')
 
-# prev = None
-# p = lines.get("Self")
+prev = None
+p = infoList.get("Self")
+
+# print(infoList)
 # while p.children is not None:
 #     p = lines.get(p.children[0])
 # layer = 0

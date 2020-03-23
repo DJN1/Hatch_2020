@@ -1,4 +1,4 @@
-Relationship,Sex,Still Living,Disease ,Age of Onset,Death Age,
+Relationship,Sex,Living,Disease,Onset,Death,
 Self,M,Y,Hypercholesterolemia,44,,
 Mate,F,N,Heart Disease,56,57,
 Child 1,M,Y,Hypercholesterolemia,32,,
