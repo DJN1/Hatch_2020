@@ -54,7 +54,7 @@ class Info:
         out += "Relation: " + self.relation + "\n"
         out += "Sex: " + self.sex + "\n"
         out += "Living: " + str(self.alive) + "\n"
-        out += "Disease: " + self.disease + "\n"
+        out += "Disease: " + str(self.disease) + "\n"
         out += "Age of Onset: " + str(self.onset) + "\n"
         out += "Age of Death: " + str(self.death) + "\n"
         return out
@@ -644,7 +644,7 @@ def mapRelationsLevel1(lines, done):
                 lines.update({"Sibling 2": Person("Sibling 2", "Sibling 2 Mate", None, lines.get("Sibling 2 Child 3"))})
             else:
                 lines.update({"Sibling 2": Person("Sibling 2", None, None, lines.get("Sibling 2 Child 3"))})
-    # mapRelationsLevel2(lines, [])
+    mapRelationsLevel2(lines, [])
 
 
 fileDF = pd.read_csv("data/F1.csv")
@@ -665,8 +665,8 @@ for index, row in fileDF.iterrows():
 print(infoList)
 
 done = []
-# mapRelationsLevel1(infoList, done)
-# print(done)
+mapRelationsLevel1(infoList, done)
+print(done)
 # for info in infoList:
 #     print("###############################################################")
 #     print(info.relation)
@@ -693,72 +693,72 @@ child = Digraph(name='child')
 prev = None
 p = infoList.get("Self")
 
-# print(infoList)
-# while p.children is not None:
-#     p = lines.get(p.children[0])
-# layer = 0
-# while p is not None:
-#     if layer == 0:
-#         print(p.info.sex)
-#         child.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     elif layer == 1:
-#         print(p.info.sex)
-#         you.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     elif layer == 2:
-#         print(p.info.sex)
-#         parent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     elif layer == 3:
-#         print(p.info.sex)
-#         grandparent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     # print("p:{}".format(type(p)))
-#     if p.mother is not None and p.father is not None:
-#         children = lines.get(p.mother).children.copy()
-#         if layer == 0:
-#             print(p.info.sex)
-#             child.node(p.mother + 'dot', shape='point')
-#             child.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             you.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             you.edge(p.mother, p.mother + 'dot', dir='none')
-#             you.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             you.edge(p.father, p.mother + 'dot', dir='none')
-#         elif layer == 1:
-#             print(p.info.sex)
-#             you.node(p.mother + 'dot', shape='point')
-#             you.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             parent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             parent.edge(p.mother, p.mother + 'dot', dir='none')
-#             parent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             parent.edge(p.father, p.mother + 'dot', dir='none')
-#         elif layer == 2:
-#             print(p.info.sex)
-#             parent.node(p.mother + 'dot', shape='point')
-#             parent.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             grandparent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.mother, p.mother + 'dot', dir='none')
-#             grandparent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.father, p.mother + 'dot', dir='none')
-#         elif layer == 3:
-#             print(p.info.sex)
-#             grandparent.node(p.mother + 'dot', shape='point')
-#             grandparent.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             grandparent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.mother, p.mother + 'dot', dir='none')
-#             grandparent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.father, p.mother + 'dot', dir='none')
-#         if len(children) > 1:
-#             children.remove(p.info.relation)
-#             p = lines.get(p.mother).children[0]
-#             layer -= 1
-#         else:
-#             p = lines.get(p.mother)
-#             layer += 1
-#     else:
-#         p = p.mother
+print(infoList)
+while p.children is not None:
+    p = infoList.get(p.children[0])
+layer = 0
+while p is not None:
+    if layer == 0:
+        print(p.info.sex)
+        child.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+    elif layer == 1:
+        print(p.info.sex)
+        you.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+    elif layer == 2:
+        print(p.info.sex)
+        parent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+    elif layer == 3:
+        print(p.info.sex)
+        grandparent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+    # print("p:{}".format(type(p)))
+    if p.mother is not None and p.father is not None:
+        children = infoList.get(p.mother).children.copy()
+        if layer == 0:
+            print(p.info.sex)
+            child.node(p.mother + 'dot', shape='point')
+            child.edge(p.info.relation, p.mother + 'dot', dir='none')
+            you.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            you.edge(p.mother, p.mother + 'dot', dir='none')
+            you.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            you.edge(p.father, p.mother + 'dot', dir='none')
+        elif layer == 1:
+            print(p.info.sex)
+            you.node(p.mother + 'dot', shape='point')
+            you.edge(p.info.relation, p.mother + 'dot', dir='none')
+            parent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            parent.edge(p.mother, p.mother + 'dot', dir='none')
+            parent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            parent.edge(p.father, p.mother + 'dot', dir='none')
+        elif layer == 2:
+            print(p.info.sex)
+            parent.node(p.mother + 'dot', shape='point')
+            parent.edge(p.info.relation, p.mother + 'dot', dir='none')
+            grandparent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            grandparent.edge(p.mother, p.mother + 'dot', dir='none')
+            grandparent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            grandparent.edge(p.father, p.mother + 'dot', dir='none')
+        elif layer == 3:
+            print(p.info.sex)
+            grandparent.node(p.mother + 'dot', shape='point')
+            grandparent.edge(p.info.relation, p.mother + 'dot', dir='none')
+            grandparent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            grandparent.edge(p.mother, p.mother + 'dot', dir='none')
+            grandparent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+            grandparent.edge(p.father, p.mother + 'dot', dir='none')
+        if len(children) > 1:
+            children.remove(p.info.relation)
+            p = infoList.get(p.mother).children[0]
+            layer -= 1
+        else:
+            p = infoList.get(p.mother)
+            layer += 1
+    else:
+        p = p.mother
 
 
-# grandparent.subgraph(parent)
-# grandparent.subgraph(you)
-# grandparent.subgraph(child)
-# print(grandparent.source)
-# grandparent.render(view=True)
-# dot.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+grandparent.subgraph(parent)
+grandparent.subgraph(you)
+grandparent.subgraph(child)
+print(grandparent.source)
+grandparent.render(view=True)
+dot.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))

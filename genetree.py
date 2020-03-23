@@ -640,7 +640,7 @@ def mapRelationsLevel1(lines, done):
 
         
 
-myFile= open( "data/F6.txt", "rU" )
+myFile= open( "data/F1.txt", "rU" )
 lines={}
 next(myFile)
 for aRow in myFile:
