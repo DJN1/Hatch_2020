@@ -2,6 +2,47 @@ from graphviz import Digraph
 import pandas as pd
 # import numpy as np
 
+relationmap = {
+    "child": -1,
+    "sibling child": -1,
+    "self": 0,
+    "sibling": 0,
+    "sibling mate": 0,
+    "father sibling child": 0,
+    "father mate child": 0,
+    "mate": 0,
+    "mother sibling child": 0,
+    "paternal grandfather sibling child child": 0,
+    "mate father": 1,
+    "mate mother": 1,
+    "father": 1,
+    "father mate": 1,
+    "father sibling": 1,
+    "father sibling mate": 1,
+    "mother": 1,
+    "mother sibling": 1,
+    "mother sibling mate": 1,
+    "paternal grandfather sibling child": 1,
+    "paternal grandfather sibling child mate": 1,
+    "maternal grandfather": 2,
+    "maternal grandmother": 2,
+    "maternal grandfather sibling": 2,
+    "maternal grandmother sibling": 2,
+    "paternal grandfather": 2,
+    "paternal grandfather sibling": 2,
+    "paternal grandfather sibling mate": 2,
+    "paternal grandmother": 2,
+    "paternal grandmother sibling": 2,
+    "maternal grandfather father": 3,
+    "maternal grandfather mother": 3,
+    "maternal grandmother father": 3,
+    "maternal grandmother mother": 3,
+    "paternal grandfather father": 3,
+    "paternal grandfather mother": 3,
+    "paternal grandmother father": 3,
+    "paternal grandmother mother": 3,
+}
+
 
 class Person:
     mother = None
@@ -647,7 +688,7 @@ def mapRelationsLevel1(lines, done):
     mapRelationsLevel2(lines, [])
 
 
-fileDF = pd.read_csv("data/F1.csv")
+fileDF = pd.read_csv("data/F2.csv")
 # print(fileDF)
 # mapRelationsLevel1()
 selfDF = fileDF.iloc[0]
@@ -667,23 +708,6 @@ print(infoList)
 done = []
 mapRelationsLevel1(infoList, done)
 print(done)
-# for info in infoList:
-#     print("###############################################################")
-#     print(info.relation)
-# myFile = open("data/F1.txt", "r")
-# lines = {}
-# next(myFile)
-# for aRow in myFile:
-#     line = aRow.replace('\n', '').split('\t')
-#     lines.update({str(line[0]): Info(line[0], line[1], line[2], line[3], line[4], line[5])})
-# myFile.close()
-
-# print(lines.get("Self"))
-# print(lines)
-
-# done = []
-# mapRelationsLevel1(lines, done)
-# print(lines)
 
 grandparent = Digraph(name='grandparent', comment='f1.txt', format="png")
 parent = Digraph(name='parent')
@@ -710,7 +734,7 @@ while p is not None:
     elif layer == 3:
         print(p.info.sex)
         grandparent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-    # print("p:{}".format(type(p)))
+    print("p:{}".format(type(p)))
     if p.mother is not None and p.father is not None:
         children = infoList.get(p.mother).children.copy()
         if layer == 0:
@@ -756,9 +780,9 @@ while p is not None:
         p = p.mother
 
 
-grandparent.subgraph(parent)
-grandparent.subgraph(you)
-grandparent.subgraph(child)
-print(grandparent.source)
-grandparent.render(view=True)
-dot.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+# grandparent.subgraph(parent)
+# grandparent.subgraph(you)
+# grandparent.subgraph(child)
+# print(grandparent.source)
+# grandparent.render(view=True)
+# dot.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
