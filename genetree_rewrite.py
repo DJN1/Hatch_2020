@@ -44,14 +44,14 @@ relationLevelMap = {
     "paternal grandmother mother": 3,
 }
 
-relationMap = {
+childMap = {
     "Self": {
         "Mate": "Mate",
-        "Child": "Child"
+        "Child": ["Child $", "Child Identical Twin $"]
     },
     "Sibling": {
-        "Mate": "Sibling Mate",
-        "Child": "Sibling Child"
+        "Mate": "Sibling $ Mate",
+        "Child": "Sibling Child $"
     },
     "Sibling Mate": {
         "Mate": "Sibling",
@@ -59,7 +59,7 @@ relationMap = {
     },
     "Mate": {
         "Mate": "Self",
-        "Child": "Child"
+        "Child": ["Child $", "Child Identical Twin $"]
     },
     "Father": {
         "Mate": "Mother",
@@ -85,11 +85,11 @@ relationMap = {
         "Mate": "Mother Sibling",
         "Child": "Mother Sibling Child"
     },
-    "Mate Father": {
+    "Mate's Father": {
         "Mate": "Mate Mother",
         "Child": "Mate"
     },
-    "Mate Mother": {
+    "Mate's Mother": {
         "Mate": "Mate Father",
         "Child": "Mate"
     },
@@ -153,6 +153,96 @@ relationMap = {
         "Mate": "Paternal Grandfather Sibling Child Mate",
         "Child": "Paternal Grandfather Sibling Child Child"
     }
+}
+
+parentMap = {
+    "Child": {
+        "Parent1": "Self",
+        "Parent2": "Mate"
+    },
+    "Sibling Child": {
+        "Parent1": "Sibling",
+        "Parent2": "Sibling Mate"
+    },
+    "Self": {
+        "Parent1": "Father",
+        "Parent2": "Mother"
+    },
+    "Sibling": {
+        "Parent1": "Father",
+        "Parent2": "Mother"
+    },
+    "Father Sibling Child": {
+        "Parent1": "Father Sibling",
+        "Parent2": "Father Sibling Mate"
+    },
+    "Mother Sibling Child": {
+        "Parent1": "Mother Sibling",
+        "Parent2": "Mother Sibling Mate"
+    },
+    "Mate": {
+        "Parent1": "Mate's Father",
+        "Parent2": "Mate's Mother"
+    },
+    "Mother": {
+        "Parent1": "Maternal Grandfather",
+        "Parent2": "Maternal Grandmother"
+    },
+    "Mother Sibling": {
+        "Parent1": "Maternal Grandfather",
+        "Parent2": "Maternal Grandmother"
+    },
+    "Father": {
+        "Parent1": "Paternal Grandfather",
+        "Parent2": "Paternal Grandmother"
+    },
+    "Father Sibling": {
+        "Parent1": "Paternal Grandfather",
+        "Parent2": "Paternal Grandmother"
+    },
+    "Maternal Grandfather": {
+        "Parent1": "Maternal Grandfather Father",
+        "Parent2": "Maternal Grandfather Mother"
+    },
+    "Maternal Grandfather Sibling": {
+        "Parent1": "Maternal Grandfather Father",
+        "Parent2": "Maternal Grandfather Mother"
+    },
+    "Maternal Grandmother": {
+        "Parent1": "Maternal Grandmother Father",
+        "Parent2": "Maternal Grandmother Mother"
+    },
+    "Maternal Grandmother Sibling": {
+        "Parent1": "Maternal Grandmother Father",
+        "Parent2": "Maternal Grandmother Mother"
+    },
+    "Paternal Grandfather": {
+        "Parent1": "Paternal Grandfather Father",
+        "Parent2": "Paternal Grandfather Mother"
+    },
+    "Paternal Grandfather Sibling": {
+        "Parent1": "Paternal Grandfather Father",
+        "Parent2": "Paternal Grandfather Mother"
+    },
+    "Paternal Grandmother": {
+        "Parent1": "Paternal Grandmother Father",
+        "Parent2": "Paternal Grandmother Mother"
+    },
+    "Paternal Grandmother Sibling": {
+        "Parent1": "Paternal Grandmother Father",
+        "Parent2": "Paternal Grandmother Mother"
+    },
+    "Paternal Grandfather Sibling Child": {
+        "Parent1": "Paternal Grandfather Sibling",
+        "Parent2": "Paternal Grandfather Sibling Mate"
+    }
+}
+
+aliasList = {
+    "Mother Sibling (Through Adoption)": "Mother Sibling",
+    "Sibling Child (Through Adoption)": "Sibling Child",
+    "Child Identical Twin": "Child",
+
 }
 
 
@@ -254,69 +344,111 @@ def simplifyRel(rel):
         return rel
 
 
-def mapChildren(sortedMappedList):
-    return None
+def getChild(relToMap):
+    numList = [int(s) for s in relToMap.split() if s.isdigit()]
+    wordList = re.sub(r" \d", "", relToMap)
+    # adoptList = re.sub()
+    # print(wordList)
+    # if len(numList) > 0:
+    for i in numList:
+        try:
+            # print(f"Child(first): {childMap[wordList]['Mate'].replace('$', str(i))} \nParent: {wordList}")
+            return childMap[wordList]['Mate'].replace('$', str(i))
+        except KeyError:
+            try:
+                # print(f"Child(alias): {childMap[aliasList[wordList]]['Mate'].replace('$', str(i))} \nParent: {wordList}")
+                return childMap[aliasList[wordList]]['Mate'].replace('$', str(i))
+            except:
+                # print(f"\n\n\t\tNo Child found: {wordList}\n\n")
+                return None
 
 
-# for i in range(1, 21):
-#     print(f"\n\nprocessing F{i}.csv\n")
-fileDF = pd.read_csv(f"data/F1.csv")
-# mapRelationsLevel1()
-selfDF = fileDF.iloc[0]
-# print(fileDF.iloc[0])
-
-# selfInfo = Info(selfDF.iloc[0], selfDF.iloc[1], (True if selfDF.iloc[2] == 'Y' else False), selfDF.iloc[3], selfDF.iloc[4], selfDF.iloc[5])
-# print(selfInfo)
-# print(fileDF)
-infoList = {}
-for index, row in fileDF.iterrows():
-    infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death).__dict__
-
-# print(infoList)
-
-relations = infoList.keys()
-relations = list(map(lambda s: re.sub(r" [0-9]", "", s).strip().lower(), relations))
-relations = list(map(lambda s: re.sub(r" \(through adoption\)", "", s), relations))
-relations = list(map(lambda s: simplifyRel(s), relations))
-# Info(relation, sex, alive, disease, onset, death)
-# print(relations)
-
-maximumIndex = 0
-maximumRel = relationLevelMap[relations[maximumIndex]]
-maxList = [maximumIndex]
-levels = [relationLevelMap[relations[0]]]
+def getParents(relToMap):
+    numList = [int(s) for s in relToMap.split() if s.isdigit()]
+    wordList = re.sub(r" \d", "", relToMap)
+    for i in numList:
+        try:
+            # print(f"Parent1(first): {parentMap[wordList]['Parent1']} \nChild: {wordList}")
+            return [parentMap[wordList]["Parent1"], parentMap[wordList]["Parent2"]]
+        except KeyError:
+            try:
+                # print(f"Parent1(alias): {parentMap[aliasList[wordList]]['Parent1']} \nChild: {wordList}")
+                return [parentMap[aliasList[wordList]]["Parent1"], parentMap[aliasList[wordList]]["Parent2"]]
+            except:
+                # print(f"\n\n\t\tNo Parent1 found: {wordList}\n\n")
+                return None
+    # print(numList)
 
 
-for i in range(1, len(relations)):
-    levels.append(relationLevelMap[relations[i]])
-    if relationLevelMap[relations[i]] > relationLevelMap[relations[maximumIndex]]:
-        maximumIndex = i
-        maximumRel = relationLevelMap[relations[maximumIndex]]
-        maxList = [i]
-    elif relationLevelMap[relations[i]] == relationLevelMap[relations[maximumIndex]]:
-        maxList.append(i)
+for itr in range(1, 21):
+    fileDF = pd.read_csv(f"data/F{itr}.csv")
+    # mapRelationsLevel1()
+    selfDF = fileDF.iloc[0]
+    # print(fileDF.iloc[0])
 
-levelMappedList = sorted(list(zip(fileDF["Relationship"].tolist(), levels)), key=lambda tup: tup[1], reverse=True)
-sortedMappedDict = dict(levelMappedList)
-minimumLevel = min(levelMappedList, key=lambda tup: tup[1])[1]
-maximumLevel = max(levelMappedList, key=lambda tup: tup[1])[1]
+    # selfInfo = Info(selfDF.iloc[0], selfDF.iloc[1], (True if selfDF.iloc[2] == 'Y' else False), selfDF.iloc[3], selfDF.iloc[4], selfDF.iloc[5])
+    # print(selfInfo)
+    # print(fileDF)
+    infoList = {}
+    for index, row in fileDF.iterrows():
+        infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death).__dict__
 
-levelneg1List = []
-level0List = []
-level1List = []
-level2List = []
-level3List = []
+    # print(infoList)
 
-personDict = {}
+    relations = infoList.keys()
+    relations = list(map(lambda s: re.sub(r" [0-9]", "", s).strip().lower(), relations))
+    relations = list(map(lambda s: re.sub(r" \(through adoption\)", "", s), relations))
+    relations = list(map(lambda s: simplifyRel(s), relations))
+    # Info(relation, sex, alive, disease, onset, death)
+    # print(relations)
 
-mainPerson = Person(None, None, None, None, None)
-lowestPerson = None
+    maximumIndex = 0
+    maximumRel = relationLevelMap[relations[maximumIndex]]
+    maxList = [maximumIndex]
+    levels = [relationLevelMap[relations[0]]]
 
-for i in levelMappedList:
-    personDict[i[0]] = Person(None, None, None, infoList[i[0]], i[1]).__dict__
+    for i in range(1, len(relations)):
+        levels.append(relationLevelMap[relations[i]])
+        if relationLevelMap[relations[i]] > relationLevelMap[relations[maximumIndex]]:
+            maximumIndex = i
+            maximumRel = relationLevelMap[relations[maximumIndex]]
+            maxList = [i]
+        elif relationLevelMap[relations[i]] == relationLevelMap[relations[maximumIndex]]:
+            maxList.append(i)
 
+    levelMappedList = sorted(list(zip(fileDF["Relationship"].tolist(), levels)), key=lambda tup: tup[1], reverse=True)
+    sortedMappedDict = dict(levelMappedList)
+    minimumLevel = min(levelMappedList, key=lambda tup: tup[1])[1]
+    maximumLevel = max(levelMappedList, key=lambda tup: tup[1])[1]
 
-print(personDict)
+    personDict = {}
+
+    mainPerson = Person(None, None, None, None, None)
+    lowestPerson = None
+
+    for person in levelMappedList:
+        Child = getChild(person[0])
+        parentList = getParents(person[0])
+        father = ""
+        mother = ""
+        try:
+            father = parentList.pop(0) if infoList[parentList[0]]["sex"] == 'M' else parentList.pop(1)
+            mother = parentList[0]
+            print(f"Key: {parentList[0]}")
+            print(f"father: {father}")
+            print(f"mother: {mother}")
+        except TypeError:
+            father = None
+            mother = None
+        # print(father)
+        # father = parentList.pop(0) if infoList[parentList[0]]["sex"] == 'M' else parentList.pop(1)
+        # print(father)
+        personDict[person[0]] = Person(None, None, None, infoList[person[0]], person[1]).__dict__
+
+# print(f"\n\n\n {infoList}")
+# personDict[list(personDict.keys())[0]]["children"] = childMap[list(personDict.keys())[0]]["Child"]
+# print(childMap[list(personDict.keys())[0]])
+# print(personDict)
 # for i in levelMappedList:
 #     if i[1] == -1:
 #         levelneg1List.append(Person(None, None))
