@@ -1,4 +1,5 @@
-# from graphviz import Digraph
+from graphviz import Digraph
+import tempfile
 import pandas as pd
 import re
 # import numpy as np
@@ -346,13 +347,6 @@ parentMap = {
     },
 }
 
-# aliasList = {
-#     "Mother Sibling (Through Adoption)": "Mother Sibling",
-#     "Sibling Child (Through Adoption)": "Sibling Child",
-#     "Child Identical Twin": "Child",
-#     "Self": "Self Identical Twin",
-# }
-
 aliasMap = {
     "Child 1": "Child",
     "Child 2": "Child",
@@ -462,6 +456,9 @@ class Person:
     def getInfo(self):
         return self.info
 
+    def getRelationLevel(self):
+        return self.relationLevel
+
     def setChildren(self, children):
         self.children = children
 
@@ -473,6 +470,9 @@ class Person:
 
     def setInfo(self, info):
         self.info = info
+
+    def setRelationlevel(self, relationLevel):
+        self.relationLevel = relationLevel
 
     def __str__(self):
         out = ""
@@ -531,8 +531,30 @@ class Info:
         return out
 
 
+def simplifyRel(rel):
+    if rel == "self identical twin":
+        return "sibling"
+    elif rel == "self (adopted)":
+        return "self"
+    elif rel == "self twin":
+        return "sibling"
+    elif rel == "sibling identical twin":
+        return "sibling"
+    elif rel == "sibling twin":
+        return "sibling"
+    elif rel == "mother sibling identical twin":
+        return "mother sibling"
+    elif rel == "mother identical twin":
+        return "mother sibling"
+    elif rel == "child identical twin":
+        return "child"
+    elif rel == "paternal grandmother (adopted)":
+        return "paternal grandmother"
+    else:
+        return rel
+
+
 def mapChildren(person, infoList, personDict):
-    print(person)
     try:
         childList = []
         for child in childMap[person]["Child"]:
@@ -575,28 +597,57 @@ def mapParents(person, infoList, personDict):
     personDict[person].setMother(mother)
 
 
-for itr in range(1, 21):
-    print(f"\n\nF{itr}.csv\n")
-    fileDF = pd.read_csv(f"data/F{itr}.csv")
-    selfDF = fileDF.iloc[0]
-    personDict = {}
+# for itr in range(1, 21):
+    # print(f"\n\nF{itr}.csv\n")
+fileDF = pd.read_csv(f"data/F1.csv")
+selfDF = fileDF.iloc[0]
+personDict = {}
 
-    infoList = {}
-    for index, row in fileDF.iterrows():
-        infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death).__dict__
+infoList = {}
+for index, row in fileDF.iterrows():
+    infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death).__dict__
 
-    for p in infoList.keys():
-        personDict[p] = Person(None, None, None, infoList[p])
-        mapChildren(p, infoList, personDict)
-        mapParents(p, infoList, personDict)
-        print(f"Person: {p}\n\n{personDict[p]}\n\n\n")
+for p in infoList.keys():
+    personDict[p] = Person(None, None, None, infoList[p])
+    mapChildren(p, infoList, personDict)
+    mapParents(p, infoList, personDict)
 
 # Person(mother, father, children, info, relatiolevel)
+orderedPersonList = list(personDict.keys())
 
+relations = infoList.keys()
+relations = list(map(lambda s: re.sub(r" [0-9]", "", s).strip().lower(), relations))
+relations = list(map(lambda s: re.sub(r" \(through adoption\)", "", s), relations))
+relations = list(map(lambda s: simplifyRel(s), relations))
 
-done = []
-# mapRelationsLevel1(infoList, done)
-# print(done)
+levels = [relationLevelMap[relations[0]]]
+
+for i in range(1, len(relations)):
+    levels.append(relationLevelMap[relations[i]])
+
+levelMappedList = sorted(list(zip(fileDF["Relationship"].tolist(), levels)), key=lambda tup: tup[1], reverse=True)
+# print(levelMappedList)
+for p in levelMappedList:
+    personDict[p[0]].setRelationlevel(p[1])
+
+maxLength = 0
+for p in levelMappedList:
+    maxLength = max(maxLength, len(p[0]))
+print(maxLength)
+
+graphList = []
+graph = Digraph(format="png", node_attr={
+    "fixedsize": "true",
+    "width": f"{maxLength / 8}",
+})
+for p in personDict:
+    if personDict[p].getInfo()["sex"] == 'M':
+        graph.node(p, p, shape="square")
+    else:
+        graph.node(p, p, shape="circle")
+
+# print(graph.source)
+graph.view(tempfile.mktemp(".gv"))
 
 # grandparent = Digraph(name='grandparent', comment='f1.txt', format="png")
 # parent = Digraph(name='parent')
