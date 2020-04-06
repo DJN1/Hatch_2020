@@ -14,8 +14,8 @@ relationLevelMap = {
     "mate": 0,
     "mother sibling child": 0,
     "paternal grandfather sibling child child": 0,
-    "mate father": 1,
-    "mate mother": 1,
+    "mate's father": 1,
+    "mate's mother": 1,
     "father": 1,
     "father mate": 1,
     "father sibling": 1,
@@ -47,83 +47,151 @@ relationLevelMap = {
 childMap = {
     "Self": {
         "Mate": "Mate",
-        "Child": ["Child $", "Child Identical Twin $"]
-    },
-    "Sibling": {
-        "Mate": "Sibling $ Mate",
-        "Child": "Sibling Child $"
-    },
-    "Sibling Mate": {
-        "Mate": "Sibling",
-        "Child": "Sibling Child"
+        "Child": ["Child", "Child 1", "Child 2", "Child 3", "Child Identical Twin 1", "Child Identical Twin 2"]
     },
     "Mate": {
         "Mate": "Self",
-        "Child": ["Child $", "Child Identical Twin $"]
+        "Child": ["Child", "Child 1", "Child 2", "Child 3", "Child Identical Twin 1", "Child Identical Twin 2"]
+    },
+    "Sibling": {
+        "Mate": "Sibling Mate",
+        "Child": ["Sibling Child", "Sibling Child 1", "Sibling Child 2", "Sibling Child 3"]
+    },
+    "Sibling Mate": {
+        "Mate": "Sibling",
+        "Child": ["Sibling Child", "Sibling Child 1", "Sibling Child 2", "Sibling Child 3"]
+    },
+    "Sibling 1 (Through Adoption)": {
+        "Mate": "Sibling 1 (Through Adoption) Mate",
+        "Child": ["Sibling 1 (Through Adoption) Child"]
+    },
+    "Sibling 1 (Through Adoption) Mate": {
+        "Mate": "Sibling 1 (Through Adoption)",
+        "Child": ["Sibling 1 (Through Adoption) Child"]
+    },
+    "Sibling 1": {
+        "Mate": "Sibling 1 Mate",
+        "Child": ["Sibling 1 Child"]
+    },
+    "Sibling 1 Mate": {
+        "Mate": "Sibling 1",
+        "Child": ["Sibling 1 Child"]
+    },
+    "Sibling 2": {
+        "Mate": "Sibling 2 Mate",
+        "Child": ["Sibling 2 Child 1", "Sibling 2 Child 1 (Through Adoption)", "Sibling 2 Child 2", "Sibling 2 Child 2 (Through Adoption)", "Sibling 2 Child 3"]
+    },
+    "Sibling 2 Mate": {
+        "Mate": "Sibling 2",
+        "Child": ["Sibling 2 Child 1", "Sibling 2 Child 1 (Through Adoption)", "Sibling 2 Child 2", "Sibling 2 Child 2 (Through Adoption)", "Sibling 2 Child 3"]
+    },
+    "Sibling 2 (Through Adoption)": {
+        "Mate": "Sibling 2 (Through Adoption) Mate",
+        "Child": ["Sibling 2 (Through Adoption) Child"]
     },
     "Father": {
         "Mate": "Mother",
-        "Child": ["Self", "Sibling"]
+        "Child": ["Self", "Self (Adopted)", "Self Identical Twin", "Self Twin", "Sibling", "Sibling Identical Twin", "Sibling Twin", "Sibling 1", "Sibling 1 (Through Adoption)", "Sibling 2", "Sibling 2 (Through Adoption)", "Sibling 3", "Sibling 4", "Sibling 5"]
     },
     "Mother": {
         "Mate": "Father",
-        "Child": ["Self", "Sibling"]
+        "Child": ["Self", "Self (Adopted)", "Self Identical Twin", "Self Twin", "Sibling", "Sibling Identical Twin", "Sibling Twin", "Sibling 1", "Sibling 1 (Through Adoption)", "Sibling 2", "Sibling 2 (Through Adoption)", "Sibling 3", "Sibling 4", "Sibling 5"]
+    },
+    "Father Mate 2": {
+        "Mate": "Father",
+        "Child": ["Father Mate 2 Child"]
     },
     "Father Sibling": {
         "Mate": "Father Sibling Mate",
-        "Child": "Father Sibling Child"
+        "Child": ["Father Sibling Child", "Father Sibling Child 1", "Father Sibling Child 2"]
     },
     "Father Sibling Mate": {
         "Mate": "Father Sibling",
-        "Child": "Father Sibling Child"
+        "Child": ["Father Sibling Child", "Father Sibling Child 1", "Father Sibling Child 2"]
+    },
+    "Father Sibling 1": {
+        "Mate": "Father Sibling 1 Mate",
+        "Child": ["Father Sibling 1 Child"]
+    },
+    "Father Sibling 1 Mate": {
+        "Mate": "Father Sibling 1",
+        "Child": ["Father Sibling 1 Child"]
+    },
+    "Father Sibling 2": {
+        "Mate": "Father Sibling 2 Mate",
+        "Child": ["Father Sibling 2 Child 1", "Father Sibling 2 Child 2"]
+    },
+    "Fathe Sibling 2 Mate": {
+        "Mate": "Father Sibling 2",
+        "Child": ["Father Sibling 2 Child 1", "Father Sibling 2 Child 2"]
+    },
+    "Father Sibling 3": {
+        "Mate": "Father Sibling 3 Mate",
+        "Child": ["Father Sibling 3 Child 1", "Father Sibling 3 Child 2"]
     },
     "Mother Sibling": {
         "Mate": "Mother Sibling Mate",
-        "Child": "Mother Sibling Child"
+        "Child": ["Mother Sibling Child 1", "Mother Sibling Child 2"]
     },
-    "Mother Sibling Mate": {
+    "Mother Sibling 1": {
+        "Mate": "Mother Sibling 1 Mate",
+        "Child": ["Mother Sibling 1 Child 1", "Mother Sibling 1 Child 2", "Mother Sibling 1 Child 3"]
+    },
+    "Mother Sibling 1 Mate": {
         "Mate": "Mother Sibling",
-        "Child": "Mother Sibling Child"
+        "Child": ["Mother Sibling 1 Child 1", "Mother Sibling 1 Child 2", "Mother Sibling 1 Child 3"]
+    },
+    "Mother Sibling 2": {
+        "Mate": "Mother Sibling 2 Mate",
+        "Child": ["Mother Sibling 2 Child", "Mother Sibling 2 Child 1", "Mother Sibling 2 Child 2", "Mother Sibling 2 Child 3", "Mother Sibling 2 Child 4"]
+    },
+    "Mother Sibling 2 Mate": {
+        "Mate": "Mother Sibling 2",
+        "Child": ["Mother Sibling 2 Child", "Mother Sibling 2 Child 1", "Mother Sibling 2 Child 2", "Mother Sibling 2 Child 3", "Mother Sibling 2 Child 4"]
+    },
+    "Mother Sibling 4": {
+        "Mate": "Mother Sibling 4 Mate",
+        "Child": ["Mother Sibling 4 Child"]
     },
     "Mate's Father": {
         "Mate": "Mate Mother",
-        "Child": "Mate"
+        "Child": ["Mate"]
     },
     "Mate's Mother": {
         "Mate": "Mate Father",
-        "Child": "Mate"
+        "Child": ["Mate"]
     },
     "Maternal Grandfather": {
         "Mate": "Maternal Grandmother",
-        "Child": ["Mother", "Mother Sibling"]
+        "Child": ["Mother", "Mother (Through Adoption)", "Mother Identical Twin", "Mother Sibling", "Mother Sibling Identical Twin", "Mother Sibling 1", "Mother Sibling 1 (Through Adoption)", "Mother Sibling 2", "Mother Sibling 2 (Through Adoption)", "Mother Sibling 2 Identical Twin", "Mother Sibling 3", "Mother Sibling 3 (Through Adoption)", "Mother Sibling 3 Identical Twin", "Mother Sibling 4"]
     },
     "Maternal Grandmother": {
         "Mate": "Maternal Grandfather",
-        "Child": ["Mother", "Mother Sibling"]
+        "Child": ["Mother", "Mother (Through Adoption)", "Mother Identical Twin", "Mother Sibling", "Mother Sibling Identical Twin", "Mother Sibling 1", "Mother Sibling 1 (Through Adoption)", "Mother Sibling 2", "Mother Sibling 2 (Through Adoption)", "Mother Sibling 2 Identical Twin", "Mother Sibling 3", "Mother Sibling 3 (Through Adoption)", "Mother Sibling 3 Identical Twin", "Mother Sibling 4"]
     },
     "Maternal Grandfather Father": {
         "Mate": "Maternal Grandfather Mother",
-        "Child": ["Maternal Grandfather", "Maternal Grandfather Sibling"]
+        "Child": ["Maternal Grandfather", "Maternal Grandfather (Through Adoption)", "Maternal Grandfather Sibling"]
     },
     "Maternal Grandfather Mother": {
         "Mate": "Maternal Grandfather Father",
-        "Child": ["Maternal Grandfather", "Maternal Grandfather Sibling"]
+        "Child": ["Maternal Grandfather", "Maternal Grandfather (Through Adoption)", "Maternal Grandfather Sibling"]
     },
     "Maternal Grandmother Father": {
         "Mate": "Maternal Grandmother Mother",
-        "Child": ["Maternal Grandmother", "Maternal Grandmother Sibling"]
+        "Child": ["Maternal Grandmother", "Maternal Grandmother (Through Adoption)", "Maternal Grandmother Sibling", "Maternal Grandmother Sibling 1", "Maternal Grandmother Sibling 2"]
     },
     "Maternal Grandmother Mother": {
         "Mate": "Maternal Grandmother Father",
-        "Child": ["Maternal Grandmother", "Maternal Grandmother Sibling"]
+        "Child": ["Maternal Grandmother", "Maternal Grandmother (Through Adoption)", "Maternal Grandmother Sibling", "Maternal Grandmother Sibling 1", "Maternal Grandmother Sibling 2"]
     },
     "Paternal Grandfather": {
         "Mate": "Paternal Grandmother",
-        "Child": ["Father", "Father Sibling"]
+        "Child": ["Father", "Father (Through Adoption)", "Father Sibling", "Father Sibling 1", "Father Sibling 2", "Father Sibling 3"]
     },
     "Paternal Grandmother": {
         "Mate": "Paternal Grandfather",
-        "Child": ["Father", "Father Sibling"]
+        "Child": ["Father", "Father (Through Adoption)", "Father Sibling", "Father Sibling 1", "Father Sibling 2", "Father Sibling 3"]
     },
     "Paternal Grandmother Father": {
         "Mate": "Paternal Grandmother Mother",
@@ -131,27 +199,43 @@ childMap = {
     },
     "Paternal Grandmother Mother": {
         "Mate": "Paternal Grandmother Father",
-        "Child": ["Paternal Grandmother", "Paternal Grandmother Sibling"]
+        "Child": ["Paternal Grandmother", "Paternal Grandmother (Adopted)", "Paternal Grandmother (Through Adoption)", "Paternal Grandmother Sibling", "Paternal Grandmother Sibling 1", "Paternal Grandmother Sibling 2", "Paternal Grandmother Sibling 3", "Paternal Grandmother Sibling 4", "Paternal Grandmother Sibling 5", "Paternal Grandmother Sibling 6", "Paternal Grandmother Sibling 7", "Paternal Grandmother Sibling 8"]
     },
     "Paternal Grandfather Father": {
         "Mate": "Paternal Grandfather Mother",
-        "Child": ["Paternal Grandfather", "Paternal Grandfather Sibling"]
+        "Child": ["Paternal Grandfather", "Paternal Grandfather (Through Adoption)", "Paternal Grandfather Sibling", "Paternal Grandfather Sibling 1", "Paternal Grandfather Sibling 2", "Paternal Grandfather Sibling 3", "Paternal Grandfather Sibling 4"]
     },
     "Paternal Grandfather Mother": {
         "Mate": "Paternal Grandfather Father",
-        "Child": ["Paternal Grandfather", "Paternal Grandfather Sibling"]
+        "Child": ["Paternal Grandfather", "Paternal Grandfather (Through Adoption)", "Paternal Grandfather Sibling", "Paternal Grandfather Sibling 1", "Paternal Grandfather Sibling 2", "Paternal Grandfather Sibling 3", "Paternal Grandfather Sibling 4"]
     },
-    "Paternal Grandfather Sibling": {
-        "Mate": "Paternal Grandfather Sibling Mate",
-        "Child": "Paternal Grandfather Sibling Child"
+    "Paternal Grandfather Sibling 1": {
+        "Mate": "Paternal Grandfather Sibling 1 Mate",
+        "Child": ["Paternal Grandfather Sibling 1 Child"]
     },
-    "Paternal Grandfather Sibling Mate": {
-        "Mate": "Paternal Grandfather Sibling",
-        "Child": "Paternal Grandfather Sibling Child"
+    "Paternal Grandfather Sibling 1 Mate": {
+        "Mate": "Paternal Grandfather Sibling 1",
+        "Child": ["Paternal Grandfather Sibling 1 Child"]
     },
-    "Paternal Grandfather Sibling Child": {
-        "Mate": "Paternal Grandfather Sibling Child Mate",
-        "Child": "Paternal Grandfather Sibling Child Child"
+    "Paternal Grandfather Sibling 1 Child": {
+        "Mate": "Paternal Grandfather Sibling 1 Child Mate",
+        "Child": "Paternal Grandfather Sibling 1 Child Child"
+    },
+    "Paternal Grandfather Sibling 2": {
+        "Mate": "Paternal Grandfather Sibling 2 Mate",
+        "Child": ["Paternal Grandfather Sibling 2 Child"]
+    },
+    "Paternal Grandfather Sibling 2 Mate": {
+        "Mate": "Paternal Grandfather Sibling 2",
+        "Child": ["Paternal Grandfather Sibling 2 Child"]
+    },
+    "Paternal Grandfather Sibling 2 Child": {
+        "Mate": "Paternal Grandfather Sibling 2 Child Mate",
+        "Child": ["Paternal Grandfather Sibling 2 Child Child"]
+    },
+    "Paternal Grandfather Sibling 2 Child Mate": {
+        "Mate": "Paternal Grandfather Sibling 2 Child",
+        "Child": ["Paternal Grandfather Sibling 2 Child Child"]
     }
 }
 
@@ -160,25 +244,37 @@ parentMap = {
         "Parent1": "Self",
         "Parent2": "Mate"
     },
-    "Sibling Child": {
-        "Parent1": "Sibling",
-        "Parent2": "Sibling Mate"
-    },
-    "Self": {
-        "Parent1": "Father",
-        "Parent2": "Mother"
-    },
-    "Sibling": {
-        "Parent1": "Father",
-        "Parent2": "Mother"
+    "Father": {
+        "Parent1": "Paternal Grandfather",
+        "Parent2": "Paternal Grandmother"
     },
     "Father Sibling Child": {
         "Parent1": "Father Sibling",
         "Parent2": "Father Sibling Mate"
     },
-    "Mother Sibling Child": {
-        "Parent1": "Mother Sibling",
-        "Parent2": "Mother Sibling Mate"
+    "Father Mate 2 Child": {
+        "Parent1": "Father",
+        "Parent2": "Father Mate 2"
+    },
+    "Father Sibling 1 Child": {
+        "Parent1": "Father Sibling 1",
+        "Parent2": "Father Sibling 1 Mate"
+    },
+    "Father Sibling 2 Child 1": {
+        "Parent1": "Father Sibling 2",
+        "Parent2": "Father Sibling 2 Mate"
+    },
+    "Father Sibling 3 Child 1": {
+        "Parent1": "Father Sibling 3",
+        "Parent2": "Father Sibling 3 Mate"
+    },
+    "Maternal Grandfather": {
+        "Parent1": "Maternal Grandfather Father",
+        "Parent2": "Maternal Grandfather Mother"
+    },
+    "Maternal Grandmother": {
+        "Parent1": "Maternal Grandmother Father",
+        "Parent2": "Maternal Grandmother Mother"
     },
     "Mate": {
         "Parent1": "Mate's Father",
@@ -188,61 +284,152 @@ parentMap = {
         "Parent1": "Maternal Grandfather",
         "Parent2": "Maternal Grandmother"
     },
-    "Mother Sibling": {
-        "Parent1": "Maternal Grandfather",
-        "Parent2": "Maternal Grandmother"
+    "Mother Sibling Child 1": {
+        "Parent1": "Mother Sibling",
+        "Parent2": "Mother Sibling Mate"
     },
-    "Father": {
-        "Parent1": "Paternal Grandfather",
-        "Parent2": "Paternal Grandmother"
+    "Mother Sibling 1 Child 1": {
+        "Parent1": "Mother Sibling 1",
+        "Parent2": "Mother Sibling 1 Mate"
     },
-    "Father Sibling": {
-        "Parent1": "Paternal Grandfather",
-        "Parent2": "Paternal Grandmother"
+    "Mother Sibling 2 Child": {
+        "Parent1": "Mother Sibling 2",
+        "Parent2": "Mother Sibling 2 Mate"
     },
-    "Maternal Grandfather": {
-        "Parent1": "Maternal Grandfather Father",
-        "Parent2": "Maternal Grandfather Mother"
-    },
-    "Maternal Grandfather Sibling": {
-        "Parent1": "Maternal Grandfather Father",
-        "Parent2": "Maternal Grandfather Mother"
-    },
-    "Maternal Grandmother": {
-        "Parent1": "Maternal Grandmother Father",
-        "Parent2": "Maternal Grandmother Mother"
-    },
-    "Maternal Grandmother Sibling": {
-        "Parent1": "Maternal Grandmother Father",
-        "Parent2": "Maternal Grandmother Mother"
+    "Mother Sibling 4 Child": {
+        "Parent1": "Mother Sibling 4",
+        "Parent2": "Mother Sibling 4 Mate"
     },
     "Paternal Grandfather": {
         "Parent1": "Paternal Grandfather Father",
         "Parent2": "Paternal Grandfather Mother"
     },
-    "Paternal Grandfather Sibling": {
-        "Parent1": "Paternal Grandfather Father",
-        "Parent2": "Paternal Grandfather Mother"
+    "Paternal Grandfather Sibling 1 Child": {
+        "Parent1": "Paternal Grandfather Sibling 1",
+        "Parent2": "Paternal Grandfather Sibling 1 Mate"
+    },
+    "Paternal Grandfather Sibling 1 Child Child": {
+        "Parent1": "Paternal Grandfather Sibling 1 Child",
+        "Parent2": "Paternal Grandfather Sibling 1 Child Mate"
+    },
+    "Paternal Grandfather Sibling 2 Child": {
+        "Parent1": "Paternal Grandfather Sibling 2",
+        "Parent2": "Paternal Grandfather Sibling 2 Mate"
+    },
+    "Paternal Grandfather Sibling 2 Child Child": {
+        "Parent1": "Paternal Grandfather Sibling 2 Child",
+        "Parent2": "Paternal Grandfather Sibling 2 Child Mate"
     },
     "Paternal Grandmother": {
         "Parent1": "Paternal Grandmother Father",
         "Parent2": "Paternal Grandmother Mother"
     },
-    "Paternal Grandmother Sibling": {
-        "Parent1": "Paternal Grandmother Father",
-        "Parent2": "Paternal Grandmother Mother"
+    "Self": {
+        "Parent1": "Father",
+        "Parent2": "Mother"
     },
-    "Paternal Grandfather Sibling Child": {
-        "Parent1": "Paternal Grandfather Sibling",
-        "Parent2": "Paternal Grandfather Sibling Mate"
-    }
+    "Sibling 1 (Through Adoption) Child": {
+        "Parent1": "Sibling 1 (Through Adoption)",
+        "Parent2": "Sibling 1 (Through Adoption) Mate"
+    },
+    "Sibling 1 Child": {
+        "Parent1": "Sibling 1",
+        "Parent2": "Sibling 1 Mate"
+    },
+    "Sibling 2 Child 1": {
+        "Parent1": "Sibling 2",
+        "Parent2": "Sibling 2 Mate"
+    },
+    "Sibling Child": {
+        "Parent1": "Sibling",
+        "Parent2": "Sibling Mate"
+    },
 }
 
-aliasList = {
-    "Mother Sibling (Through Adoption)": "Mother Sibling",
-    "Sibling Child (Through Adoption)": "Sibling Child",
-    "Child Identical Twin": "Child",
+# aliasList = {
+#     "Mother Sibling (Through Adoption)": "Mother Sibling",
+#     "Sibling Child (Through Adoption)": "Sibling Child",
+#     "Child Identical Twin": "Child",
+#     "Self": "Self Identical Twin",
+# }
 
+aliasMap = {
+    "Child 1": "Child",
+    "Child 2": "Child",
+    "Child 3": "Child",
+    "Child Identical Twin 1": "Child",
+    "Child Identical Twin 2": "Child",
+    "Father (Through Adoption)": "Father",
+    "Father Sibling": "Father",
+    "Father Sibling 1": "Father",
+    "Father Sibling 2": "Father",
+    "Father Sibling 3": "Father",
+    "Father Sibling Child 1": "Father Sibling Child",
+    "Father Sibling Child 2": "Father Sibling Child",
+    "Father Sibling 2 Child 2": "Father Sibling 2 Child 1",
+    "Father Sibling 3 Child 2": "Father Sibling 3 Child 1",
+    "Maternal Grandfather (Through Adoption)": "Maternal Grandfather",
+    "Maternal Grandfather Sibling": "Maternal Grandfather",
+    "Maternal Grandmother (Through Adoption)": "Maternal Grandmother",
+    "Maternal Grandmother Sibling": "Maternal Grandmother",
+    "Maternal Grandmother Sibling 1": "Maternal Grandmother",
+    "Maternal Grandmother Sibling 2": "Maternal Grandmother",
+    "Mother (Through Adoption)": "Mother",
+    "Mother Identical Twin": "Mother",
+    "Mother Sibling Identical Twin": "Mother",
+    "Mother Sibling": "Mother",
+    "Mother Sibling 1": "Mother",
+    "Mother Sibling 1 (Through Adoption)": "Mother",
+    "Mother Sibling 2": "Mother",
+    "Mother Sibling 2 (Through Adoption)": "Mother",
+    "Mother Sibling 2 Identical Twin": "Mother",
+    "Mother Sibling 3": "Mother",
+    "Mother Sibling 3 (Through Adoption)": "Mother",
+    "Mother Sibling 3 Identical Twin": "Mother",
+    "Mother Sibling 4": "Mother",
+    "Paternal Grandfather (Through Adoption)": "Paternal Grandfather",
+    "Paternal Grandfather Sibling": "Paternal Grandfather",
+    "Paternal Grandfather Sibling 1": "Paternal Grandfather",
+    "Paternal Grandfather Sibling 2": "Paternal Grandfather",
+    "Paternal Grandfather Sibling 3": "Paternal Grandfather",
+    "Paternal Grandfather Sibling 4": "Paternal Grandfather",
+    "Paternal Grandmother (Adopted)": "Paternal Grandmother",
+    "Paternal Grandmother (Though Adoption)": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 1": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 2": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 3": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 4": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 5": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 6": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 7": "Paternal Grandmother",
+    "Paternal Grandmother Sibling 8": "Paternal Grandmother",
+    "Self (Adopted)": "Self",
+    "Self Identical Twin": "Self",
+    "Self Twin": "Self",
+    "Sibling": "Self",
+    "Sibling Identical Twin": "Self",
+    "Sibling Twin": "Self",
+    "Sibling 1": "Self",
+    "Sibling 1 (Through Adoption)": "Self",
+    "Sibling 2": "Self",
+    "Sibling 2 (Through Adoption)": "Self",
+    "Sibling 3": "Self",
+    "Sibling 4": "Self",
+    "Sibling 5": "Self",
+    "Mother Sibling Child 2": "Mother Sibling Child 1",
+    "Mother Sibling 1 Child 2": "Mother Sibling 1 Child 1",
+    "Mother Sibling 1 Child 3": "Mother Sibling 1 Child 1",
+    "Mother Sibling 2 Child 1": "Mother Sibling 2 Child",
+    "Mother Sibling 2 Child 2": "Mother Sibling 2 Child",
+    "Mother Sibling 2 Child 3": "Mother Sibling 2 Child",
+    "Mother Sibling 2 Child 4": "Mother Sibling 2 Child",
+    "Sibling 2 Child 1 (Through Adoption)": "Sibling 2 Child 1",
+    "Sibling 2 Child 2": "Sibling 2 Child 1",
+    "Sibling 2 Child 2 (Through Adoption)": "Sibling 2 Child 1",
+    "Sibling 2 Child 3 (Through Adoption)": "Sibling 2 Child 1",
+    "Sibling Child 1": "Sibling Child",
+    "Sibling Child 2": "Sibling Child",
+    "Sibling Child 3": "Sibling Child"
 }
 
 
@@ -253,17 +440,44 @@ class Person:
     info = None
     relationLevel = None
 
-    def __init__(self, mother, father, children, info, relationLevel):
+    def __init__(self, mother, father, children, info, relationLevel=None):
         self.mother = mother
         self.father = father
         self.children = children
         self.info = info
         self.relationLevel = relationLevel
 
+    def getChildren(self):
+        return self.children
+
+    def getMother(self):
+        return self.mother
+
+    def getFather(self):
+        return self.father
+
+    def getParents(self):
+        return f"Father: {self.father}\nMother: {self.mother}"
+
+    def getInfo(self):
+        return self.info
+
+    def setChildren(self, children):
+        self.children = children
+
+    def setMother(self, mother):
+        self.mother = mother
+
+    def setFather(self, father):
+        self.father = father
+
+    def setInfo(self, info):
+        self.info = info
+
     def __str__(self):
         out = ""
-        out += "Mother: " + self.mother if self.mother is not None else "N/A" + "\n"
-        out += "Father: " + self.father if self.father is not None else "N/A" + "\n"
+        out += "Mother: " + (self.mother + "\n") if self.mother is not None else "N/A" + "\n"
+        out += "Father: " + (self.father + "\n") if self.father is not None else "N/A" + "\n"
         out += "Children: " + (str(self.children) if self.children is not None else "N/A") + "\n"
         out += "Info: \n" + str(self.info) + "\n"
         out += "Relationlevel: " + str(self.relationLevel)
@@ -332,10 +546,6 @@ def simplifyRel(rel):
         return "mother sibling"
     elif rel == "mother identical twin":
         return "mother sibling"
-    elif rel == "mate's mother":
-        return "mate mother"
-    elif rel == "mate's father":
-        return "mate father"
     elif rel == "child identical twin":
         return "child"
     elif rel == "paternal grandmother (adopted)":
@@ -344,106 +554,161 @@ def simplifyRel(rel):
         return rel
 
 
-def getChild(relToMap):
-    numList = [int(s) for s in relToMap.split() if s.isdigit()]
-    wordList = re.sub(r" \d", "", relToMap)
-    # adoptList = re.sub()
-    # print(wordList)
-    # if len(numList) > 0:
-    for i in numList:
-        try:
-            # print(f"Child(first): {childMap[wordList]['Mate'].replace('$', str(i))} \nParent: {wordList}")
-            return childMap[wordList]['Mate'].replace('$', str(i))
-        except KeyError:
-            try:
-                # print(f"Child(alias): {childMap[aliasList[wordList]]['Mate'].replace('$', str(i))} \nParent: {wordList}")
-                return childMap[aliasList[wordList]]['Mate'].replace('$', str(i))
-            except:
-                # print(f"\n\n\t\tNo Child found: {wordList}\n\n")
-                return None
+# def getChild(relToMap):
+#     numList = [int(s) for s in relToMap.split() if s.isdigit()]
+#     wordList = re.sub(r" \d", "", relToMap)
+#     # adoptList = re.sub()
+#     # print(wordList)
+#     # if len(numList) > 0:
+#     for i in numList:
+#         try:
+#             # print(f"Child(first): {childMap[wordList]['Mate'].replace('$', str(i))} \nParent: {wordList}")
+#             return childMap[wordList]['Mate'].replace('$', str(i))
+#         except KeyError:
+#             try:
+#                 # print(f"Child(alias): {childMap[aliasList[wordList]]['Mate'].replace('$', str(i))} \nParent: {wordList}")
+#                 return childMap[aliasList[wordList]]['Mate'].replace('$', str(i))
+#             except:
+#                 # print(f"\n\n\t\tNo Child found: {wordList}\n\n")
+#                 return None
 
 
-def getParents(relToMap):
-    numList = [int(s) for s in relToMap.split() if s.isdigit()]
-    wordList = re.sub(r" \d", "", relToMap)
-    for i in numList:
+# def getParents(relToMap):
+#     numList = [int(s) for s in relToMap.split() if s.isdigit()]
+#     wordList = re.sub(r" \d", "", relToMap)
+#     for i in numList:
+#         try:
+#             # print(f"Parent1(first): {parentMap[wordList]['Parent1']} \nChild: {wordList}")
+#             return [parentMap[wordList]["Parent1"], parentMap[wordList]["Parent2"]]
+#         except KeyError:
+#             try:
+#                 # print(f"Parent1(alias): {parentMap[aliasList[wordList]]['Parent1']} \nChild: {wordList}")
+#                 return [parentMap[aliasList[wordList]]["Parent1"], parentMap[aliasList[wordList]]["Parent2"]]
+#             except:
+#                 # print(f"\n\n\t\tNo Parent1 found: {wordList}\n\n")
+#                 return None
+#     # print(numList)
+
+
+def mapChildren(person, infoList, personDict):
+    print(person)
+    try:
+        childList = []
+        for child in childMap[person]["Child"]:
+            if child in infoList:
+                childList.append(child)
+    except KeyError:
+        childList = []
+    personDict[person].setChildren(childList)
+
+
+def mapParents(person, infoList, personDict):
+    parents = []
+    father = ""
+    mother = ""
+    try:
+        parents = [parentMap[person]["Parent1"], parentMap[person]["Parent2"]]
+    except KeyError:
         try:
-            # print(f"Parent1(first): {parentMap[wordList]['Parent1']} \nChild: {wordList}")
-            return [parentMap[wordList]["Parent1"], parentMap[wordList]["Parent2"]]
-        except KeyError:
-            try:
-                # print(f"Parent1(alias): {parentMap[aliasList[wordList]]['Parent1']} \nChild: {wordList}")
-                return [parentMap[aliasList[wordList]]["Parent1"], parentMap[aliasList[wordList]]["Parent2"]]
-            except:
-                # print(f"\n\n\t\tNo Parent1 found: {wordList}\n\n")
-                return None
-    # print(numList)
+            parents = [parentMap[aliasMap[person]]["Parent1"], parentMap[person]["Parent2"]]
+        except:
+            parents = None
+    if parents:
+        try:
+            if re.search("father", parents[0], flags=re.IGNORECASE):
+                father = parents.pop(0)
+                mother = parents.pop(0)
+            elif infoList[parents[0]]["sex"] == 'M':
+                father = parents.pop(0)
+                mother = parents.pop(0)
+            else:
+                father = parents.pop(1)
+                mother = parents.pop(0)
+        except:
+            father = "Unknown"
+            mother = "Unknown"
+    else:
+        father = "Unknown"
+        mother = "Unknown"
+    personDict[person].setFather(father)
+    personDict[person].setMother(mother)
 
 
 for itr in range(1, 21):
+    print(f"\n\nF{itr}.csv\n")
     fileDF = pd.read_csv(f"data/F{itr}.csv")
     # mapRelationsLevel1()
     selfDF = fileDF.iloc[0]
     # print(fileDF.iloc[0])
+    personDict = {}
 
-    # selfInfo = Info(selfDF.iloc[0], selfDF.iloc[1], (True if selfDF.iloc[2] == 'Y' else False), selfDF.iloc[3], selfDF.iloc[4], selfDF.iloc[5])
-    # print(selfInfo)
-    # print(fileDF)
     infoList = {}
     for index, row in fileDF.iterrows():
         infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death).__dict__
 
+    for p in infoList.keys():
+        personDict[p] = Person(None, None, None, infoList[p])
+        mapChildren(p, infoList, personDict)
+        mapParents(p, infoList, personDict)
+        print(f"Person: {p}\n\n{personDict[p]}\n\n\n")
+
+# Person(mother, father, children, info, relatiolevel)
+
+    # relations = infoList.keys()
+    # relations = list(map(lambda s: re.sub(r" [0-9]", "", s).strip().lower(), relations))
+    # relations = list(map(lambda s: re.sub(r" \(through adoption\)", "", s), relations))
+    # relations = list(map(lambda s: simplifyRel(s), relations))
+    # # Info(relation, sex, alive, disease, onset, death)
+    # # print(relations)
+
+    # maximumIndex = 0
+    # maximumRel = relationLevelMap[relations[maximumIndex]]
+    # maxList = [maximumIndex]
+    # levels = [relationLevelMap[relations[0]]]
+
+    # for i in range(1, len(relations)):
+    #     levels.append(relationLevelMap[relations[i]])
+    #     if relationLevelMap[relations[i]] > relationLevelMap[relations[maximumIndex]]:
+    #         maximumIndex = i
+    #         maximumRel = relationLevelMap[relations[maximumIndex]]
+    #         maxList = [i]
+    #     elif relationLevelMap[relations[i]] == relationLevelMap[relations[maximumIndex]]:
+    #         maxList.append(i)
+
+    # levelMappedList = sorted(list(zip(fileDF["Relationship"].tolist(), levels)), key=lambda tup: tup[1], reverse=True)
+    # sortedMappedDict = dict(levelMappedList)
+    # minimumLevel = min(levelMappedList, key=lambda tup: tup[1])[1]
+    # maximumLevel = max(levelMappedList, key=lambda tup: tup[1])[1]
+
+    # mainPerson = Person(None, None, None, None, None)
+    # lowestPerson = None
     # print(infoList)
 
-    relations = infoList.keys()
-    relations = list(map(lambda s: re.sub(r" [0-9]", "", s).strip().lower(), relations))
-    relations = list(map(lambda s: re.sub(r" \(through adoption\)", "", s), relations))
-    relations = list(map(lambda s: simplifyRel(s), relations))
-    # Info(relation, sex, alive, disease, onset, death)
-    # print(relations)
+    # for person in levelMappedList:
+    #     Child = getChild(person[0])
+    #     parentList = getParents(person[0])
+    #     father = ""
+    #     mother = ""
+    #     try:
+    #         try:
+    #             print(f"parentList[0]: {parentList[0]}")
+    #             father = parentList.pop(0) if infoList[parentList[0]]["sex"] == 'M' else parentList.pop(1)
+    #             mother = parentList[0]
+    #         except KeyError:
+    #             father = parentList.pop(0) if infoList[aliasList[parentList[0]]]["sex"] == 'M' else parentList.pop(1)
+    #             mother = parentList[0]
+    #         print(f"Key: {parentList[0]}")
+    #         print(f"father: {father}")
+    #         print(f"mother: {mother}")
+    #     except TypeError:
+    #         father = None
+    #         mother = None
 
-    maximumIndex = 0
-    maximumRel = relationLevelMap[relations[maximumIndex]]
-    maxList = [maximumIndex]
-    levels = [relationLevelMap[relations[0]]]
 
-    for i in range(1, len(relations)):
-        levels.append(relationLevelMap[relations[i]])
-        if relationLevelMap[relations[i]] > relationLevelMap[relations[maximumIndex]]:
-            maximumIndex = i
-            maximumRel = relationLevelMap[relations[maximumIndex]]
-            maxList = [i]
-        elif relationLevelMap[relations[i]] == relationLevelMap[relations[maximumIndex]]:
-            maxList.append(i)
-
-    levelMappedList = sorted(list(zip(fileDF["Relationship"].tolist(), levels)), key=lambda tup: tup[1], reverse=True)
-    sortedMappedDict = dict(levelMappedList)
-    minimumLevel = min(levelMappedList, key=lambda tup: tup[1])[1]
-    maximumLevel = max(levelMappedList, key=lambda tup: tup[1])[1]
-
-    personDict = {}
-
-    mainPerson = Person(None, None, None, None, None)
-    lowestPerson = None
-
-    for person in levelMappedList:
-        Child = getChild(person[0])
-        parentList = getParents(person[0])
-        father = ""
-        mother = ""
-        try:
-            father = parentList.pop(0) if infoList[parentList[0]]["sex"] == 'M' else parentList.pop(1)
-            mother = parentList[0]
-            print(f"Key: {parentList[0]}")
-            print(f"father: {father}")
-            print(f"mother: {mother}")
-        except TypeError:
-            father = None
-            mother = None
-        # print(father)
-        # father = parentList.pop(0) if infoList[parentList[0]]["sex"] == 'M' else parentList.pop(1)
-        # print(father)
-        personDict[person[0]] = Person(None, None, None, infoList[person[0]], person[1]).__dict__
+# print(father)
+# father = parentList.pop(0) if infoList[parentList[0]]["sex"] == 'M' else parentList.pop(1)
+# print(father)
+#    personDict[person[0]] = Person(None, None, None, infoList[person[0]], person[1]).__dict__
 
 # print(f"\n\n\n {infoList}")
 # personDict[list(personDict.keys())[0]]["children"] = childMap[list(personDict.keys())[0]]["Child"]
