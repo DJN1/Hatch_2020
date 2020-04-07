@@ -1,7 +1,8 @@
-from graphviz import Digraph
+from graphviz import Graph
 import tempfile
 import pandas as pd
 import re
+import math
 # import numpy as np
 
 relationLevelMap = {
@@ -599,7 +600,8 @@ def mapParents(person, infoList, personDict):
 
 # for itr in range(1, 21):
     # print(f"\n\nF{itr}.csv\n")
-fileDF = pd.read_csv(f"data/F1.csv")
+filename = "F1"
+fileDF = pd.read_csv(f"data/{filename}.csv")
 selfDF = fileDF.iloc[0]
 personDict = {}
 
@@ -612,7 +614,6 @@ for p in infoList.keys():
     mapChildren(p, infoList, personDict)
     mapParents(p, infoList, personDict)
 
-# Person(mother, father, children, info, relatiolevel)
 orderedPersonList = list(personDict.keys())
 
 relations = infoList.keys()
@@ -626,7 +627,7 @@ for i in range(1, len(relations)):
     levels.append(relationLevelMap[relations[i]])
 
 levelMappedList = sorted(list(zip(fileDF["Relationship"].tolist(), levels)), key=lambda tup: tup[1], reverse=True)
-# print(levelMappedList)
+
 for p in levelMappedList:
     personDict[p[0]].setRelationlevel(p[1])
 
@@ -635,19 +636,162 @@ for p in levelMappedList:
     maxLength = max(maxLength, len(p[0]))
 print(maxLength)
 
-graphList = []
-graph = Digraph(format="png", node_attr={
+graph = Graph(format="png", comment=filename, node_attr={
     "fixedsize": "true",
     "width": f"{maxLength / 8}",
 })
+
+childList = []
 for p in personDict:
-    if personDict[p].getInfo()["sex"] == 'M':
-        graph.node(p, p, shape="square")
+    if personDict[p].getChildren() not in childList and personDict[p].getChildren() != []:
+        childList.append(personDict[p].getChildren())
+
+parentList = []
+
+
+for children in childList:
+    for child in children:
+        currCouple = (personDict[child].getFather(), personDict[child].getMother())
+        if currCouple not in parentList and currCouple != ("Unknown", "Unknown"):
+            parentList.append(currCouple)
+
+coupleGraphList = []
+
+for couple in parentList:
+    g = Graph(name=couple[0], format="png", node_attr={
+        "rank": "same",
+        "fixedsize": "true",
+        "width": f"{maxLength / 8}"
+    }, graph_attr={"rankdir": "LR"}, edge_attr={"concentrate": "true"})
+    fatherInfo = personDict[couple[0]].getInfo()
+    motherInfo = personDict[couple[1]].getInfo()
+    fatherDisease = ""
+    fatherOnset = ""
+    fatherDeath = ""
+    motherDisease = ""
+    motherOnset = ""
+    motherDeath = ""
+    if type(fatherInfo["disease"]) is str:
+        fatherDisease = fatherInfo["disease"]
+        fatherOnset = fatherInfo["onset"]
+    if type(motherInfo["disease"]) is str:
+        motherDisease = motherInfo["disease"]
+        motherOnset = motherInfo["onset"]
+    g.graph_attr["rankdir"] = "LR"
+    if personDict[couple[0]].getInfo()["alive"]:
+        g.node(couple[0], f"{couple[0]}\n{fatherDisease}\n{fatherOnset}", shape="square")
     else:
-        graph.node(p, p, shape="circle")
+        fatherDeath = fatherInfo["death"]
+        g.node(couple[0], f"{couple[0]}\n{fatherDisease}\n{fatherOnset}\n{fatherDeath}", shape="square", color="black", fontcolor="white", style="filled")
+    if personDict[couple[1]].getInfo()["alive"]:
+        g.node(couple[1], f"{couple[1]}\n{motherDisease}\n{motherOnset}", shape="circle")
+    else:
+        motherDeath = motherInfo["death"]
+        g.node(couple[1], f"{couple[1]}\n{motherDisease}\n{motherOnset}\n{motherDeath}", shape="circle", color="black", fontcolor="white", style="filled")
+    g.edge(couple[0], couple[1], constraint="true")
+    coupleGraphList.append(g)
+
+childrenGraphList = []
+
+
+for idx, children in enumerate(childList):
+    g = Graph(name=children[0], format="png", node_attr={
+        "rank": "same",
+        "fixedsize": "true",
+        "width": f"{maxLength / 8}"
+    }, graph_attr={"rankdir": "LR"}, edge_attr={"concentrate": "true"})
+
+    for child in children:
+        childInfo = personDict[child].getInfo()
+        childDisease = ""
+        childOnset = ""
+        childDeath = ""
+        if not math.isnan(childInfo["disease"]):
+            childDisease = childInfo["disease"]
+            childOnset = childInfo["onset"]
+        if childInfo["sex"] == "M":
+            if childInfo["alive"]:
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}", shape="square")
+            else:
+                childDeath = childInfo["death"]
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}\n{childDeath}", shape="square", color="black", fontcolor="white", style="filled")
+        else:
+            if childInfo["alive"]:
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}", shape="circle")
+            else:
+                childDeath = childInfo["death"]
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}\n{childDeath}", shape="circle", color="black", fontcolor="white", style="filled")
+    # sg = Graph(f"{childList[idx][0]}graph", format="png")
+    # sg.node(f"{childList[idx][0]}conn", rank="min")
+    # g.edge(f"{childList[idx][0]}conn", children[0], constraint="false")
+    for i in range(1, len(children)):
+        g.edge(children[i - 1], children[i])
+        # g.edge(f"{childList[idx][0]}conn", children[i], constraint="false")
+    # g.edge()
+    # g.subgraph(sg)
+    childrenGraphList.append(g)
+
+# for idx, couple in enumerate(coupleGraphList):
+#     g = couple
+#     graphName = f"{childList[0][0]}graph"
+#     nodeName = f"{childList[0][0]}conn"
+#     sg = Graph(graphName, format="png")
+#     sg.node(nodeName, rank="min")
+#     g.subgraph(sg)
+#     g.edge(nodeName, parentList[0][0], constraint="false")
+#     g.edge(nodeName, parentList[0][1], constraint="false")
+
+# childrenGraphList[1].view(tempfile.mktemp(".gv"))
+# coupleGraphList[1].view(tempfile.mktemp(".gv"))
+# print(coupleGraphList[1].source)
+graphList = []
+for idx in range(len(coupleGraphList)):
+    parentG = coupleGraphList[idx]
+    childrenG = childrenGraphList[idx]
+    parentG.edge(childList[idx][0], parentList[idx][0], constraint="false")
+    parentG.edge(childList[idx][0], parentList[idx][1], constraint="false")
+    parentG.subgraph(childrenG)
+    graphList.append(parentG)
+
+
+G = Graph("combinedGraph", format="png", node_attr={"rank": "same"}, graph_attr={"rankdir": "LR"})
+for graph in graphList:
+    G.subgraph(graph)
+G.view(tempfile.mktemp())
+
+# for p in personDict:
+#     personInfo = personDict[p]
+#     if personInfo.getChildren() not in childList:
+#         childList.append(personInfo.getChildren())
+#     if personInfo.getInfo()["sex"] == 'M':
+#         if personInfo.getInfo()["alive"]:
+#             graph.node(p, p, shape="square")
+#         else:
+#             graph.node(p, p, shape="square", color="black", fontcolor="white", style="filled")
+#     else:
+#         if personInfo.getInfo()["alive"]:
+#             graph.node(p, p, shape="circle")
+#         else:
+#             graph.node(p, p, shape="circle", color="black", fontcolor="white", style="filled")
+
+
+
+# for children in childList:
+#     for child in children:
+#         father = personDict[child].getFather()
+#         mother = personDict[child].getMother()
+#         if father != "Unknown" and mother != "Unknown":
+#             invisNode = str(father) + str(mother)
+#             graph.edge(father, mother)
+#             graph.edge(child, )
+            # graph.edge()
+        # for child in personDict[p].getChildren():
+        #     if personDict[child].getMother() != "Unknown":
+        #         graph.edge(p, personDict[child].getMother(), constraint="false")
+        #     graph.edge(p, child)
 
 # print(graph.source)
-graph.view(tempfile.mktemp(".gv"))
+# graph.view(tempfile.mktemp(".gv"))
 
 # grandparent = Digraph(name='grandparent', comment='f1.txt', format="png")
 # parent = Digraph(name='parent')
