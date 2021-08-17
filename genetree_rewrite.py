@@ -1,7 +1,6 @@
-# from graphviz import Digraph
+from graphviz import Graph
 import pandas as pd
 import re
-# import numpy as np
 
 relationLevelMap = {
     "child": -1,
@@ -346,13 +345,6 @@ parentMap = {
     },
 }
 
-# aliasList = {
-#     "Mother Sibling (Through Adoption)": "Mother Sibling",
-#     "Sibling Child (Through Adoption)": "Sibling Child",
-#     "Child Identical Twin": "Child",
-#     "Self": "Self Identical Twin",
-# }
-
 aliasMap = {
     "Child 1": "Child",
     "Child 2": "Child",
@@ -462,6 +454,9 @@ class Person:
     def getInfo(self):
         return self.info
 
+    def getRelationLevel(self):
+        return self.relationLevel
+
     def setChildren(self, children):
         self.children = children
 
@@ -473,6 +468,9 @@ class Person:
 
     def setInfo(self, info):
         self.info = info
+
+    def setRelationlevel(self, relationLevel):
+        self.relationLevel = relationLevel
 
     def __str__(self):
         out = ""
@@ -531,8 +529,30 @@ class Info:
         return out
 
 
+def simplifyRel(rel):
+    if rel == "self identical twin":
+        return "sibling"
+    elif rel == "self (adopted)":
+        return "self"
+    elif rel == "self twin":
+        return "sibling"
+    elif rel == "sibling identical twin":
+        return "sibling"
+    elif rel == "sibling twin":
+        return "sibling"
+    elif rel == "mother sibling identical twin":
+        return "mother sibling"
+    elif rel == "mother identical twin":
+        return "mother sibling"
+    elif rel == "child identical twin":
+        return "child"
+    elif rel == "paternal grandmother (adopted)":
+        return "paternal grandmother"
+    else:
+        return rel
+
+
 def mapChildren(person, infoList, personDict):
-    print(person)
     try:
         childList = []
         for child in childMap[person]["Child"]:
@@ -575,103 +595,145 @@ def mapParents(person, infoList, personDict):
     personDict[person].setMother(mother)
 
 
-for itr in range(1, 21):
-    print(f"\n\nF{itr}.csv\n")
-    fileDF = pd.read_csv(f"data/F{itr}.csv")
-    selfDF = fileDF.iloc[0]
-    personDict = {}
+# for itr in range(1, 21):
+    # print(f"\n\nF{itr}.csv\n")
+filename = "F3"
+fileDF = pd.read_csv(f"data/{filename}.csv")
+selfDF = fileDF.iloc[0]
+personDict = {}
 
-    infoList = {}
-    for index, row in fileDF.iterrows():
-        infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death).__dict__
+infoList = {}
+for index, row in fileDF.iterrows():
+    infoList[row.Relationship] = Info(row.Relationship, row.Sex, (True if row.Living == 'Y' else False), row.Disease, row.Onset, row.Death).__dict__
 
-    for p in infoList.keys():
-        personDict[p] = Person(None, None, None, infoList[p])
-        mapChildren(p, infoList, personDict)
-        mapParents(p, infoList, personDict)
-        print(f"Person: {p}\n\n{personDict[p]}\n\n\n")
+for p in infoList.keys():
+    personDict[p] = Person(None, None, None, infoList[p])
+    mapChildren(p, infoList, personDict)
+    mapParents(p, infoList, personDict)
 
-# Person(mother, father, children, info, relatiolevel)
+orderedPersonList = list(personDict.keys())
 
+relations = infoList.keys()
+relations = list(map(lambda s: re.sub(r" [0-9]", "", s).strip().lower(), relations))
+relations = list(map(lambda s: re.sub(r" \(through adoption\)", "", s), relations))
+relations = list(map(lambda s: simplifyRel(s), relations))
 
-done = []
-# mapRelationsLevel1(infoList, done)
-# print(done)
+levels = [relationLevelMap[relations[0]]]
 
-# grandparent = Digraph(name='grandparent', comment='f1.txt', format="png")
-# parent = Digraph(name='parent')
-# you = Digraph(name='self')
-# child = Digraph(name='child')
+for i in range(1, len(relations)):
+    levels.append(relationLevelMap[relations[i]])
 
-# prev = None
-# p = infoList.get("Self")
+levelMappedList = sorted(list(zip(fileDF["Relationship"].tolist(), levels)), key=lambda tup: tup[1], reverse=True)
 
-# print(infoList)
-# while p.children is not None:
-#     p = infoList.get(p.children[0])
-# layer = 0
-# while p is not None:
-#     if layer == 0:
-#         print(p.info.sex)
-#         child.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     elif layer == 1:
-#         print(p.info.sex)
-#         you.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     elif layer == 2:
-#         print(p.info.sex)
-#         parent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     elif layer == 3:
-#         print(p.info.sex)
-#         grandparent.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#     print("p:{}".format(type(p)))
-#     if p.mother is not None and p.father is not None:
-#         children = infoList.get(p.mother).children.copy()
-#         if layer == 0:
-#             print(p.info.sex)
-#             child.node(p.mother + 'dot', shape='point')
-#             child.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             you.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             you.edge(p.mother, p.mother + 'dot', dir='none')
-#             you.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             you.edge(p.father, p.mother + 'dot', dir='none')
-#         elif layer == 1:
-#             print(p.info.sex)
-#             you.node(p.mother + 'dot', shape='point')
-#             you.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             parent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             parent.edge(p.mother, p.mother + 'dot', dir='none')
-#             parent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             parent.edge(p.father, p.mother + 'dot', dir='none')
-#         elif layer == 2:
-#             print(p.info.sex)
-#             parent.node(p.mother + 'dot', shape='point')
-#             parent.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             grandparent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.mother, p.mother + 'dot', dir='none')
-#             grandparent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.father, p.mother + 'dot', dir='none')
-#         elif layer == 3:
-#             print(p.info.sex)
-#             grandparent.node(p.mother + 'dot', shape='point')
-#             grandparent.edge(p.info.relation, p.mother + 'dot', dir='none')
-#             grandparent.node(p.mother, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.mother, p.mother + 'dot', dir='none')
-#             grandparent.node(p.father, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
-#             grandparent.edge(p.father, p.mother + 'dot', dir='none')
-#         if len(children) > 1:
-#             children.remove(p.info.relation)
-#             p = infoList.get(p.mother).children[0]
-#             layer -= 1
-#         else:
-#             p = infoList.get(p.mother)
-#             layer += 1
-#     else:
-#         p = p.mother
+for p in levelMappedList:
+    personDict[p[0]].setRelationlevel(p[1])
+
+maxLength = 0
+for p in levelMappedList:
+    maxLength = max(maxLength, len(p[0]))
+print(maxLength)
+
+graph = Graph(format="png", comment=filename, node_attr={
+    "fixedsize": "true",
+    "width": f"{maxLength / 8}",
+})
+
+childList = []
+for p in personDict:
+    if personDict[p].getChildren() not in childList and personDict[p].getChildren() != []:
+        childList.append(personDict[p].getChildren())
+
+parentList = []
 
 
-# grandparent.subgraph(parent)
-# grandparent.subgraph(you)
-# grandparent.subgraph(child)
-# print(grandparent.source)
-# grandparent.render(view=True)
-# dot.node(p.info.relation, shape=('box' if p.info.sex == 'M' else 'circle'), color=('blue' if p.info.sex == 'M' else 'pink'))
+for children in childList:
+    for child in children:
+        currCouple = (personDict[child].getFather(), personDict[child].getMother())
+        if currCouple not in parentList and currCouple != ("Unknown", "Unknown"):
+            parentList.append(currCouple)
+
+coupleGraphList = []
+
+for couple in parentList:
+    g = Graph(name=couple[0], format="png", node_attr={
+        "rank": "same",
+        "fixedsize": "true",
+        "width": f"{maxLength / 8}"
+    }, graph_attr={"rankdir": "LR"}, edge_attr={"concentrate": "true"})
+    fatherInfo = personDict[couple[0]].getInfo()
+    motherInfo = personDict[couple[1]].getInfo()
+    fatherDisease = ""
+    fatherOnset = ""
+    fatherDeath = ""
+    motherDisease = ""
+    motherOnset = ""
+    motherDeath = ""
+    if type(fatherInfo["disease"]) is str:
+        fatherDisease = f"Disease: {fatherInfo['disease']}"
+        fatherOnset = f"Onset: {fatherInfo['onset']}"
+    if type(motherInfo["disease"]) is str:
+        motherDisease = f"Disease: {motherInfo['disease']}"
+        motherOnset = f"Onset: {motherInfo['onset']}"
+    g.graph_attr["rankdir"] = "LR"
+    if personDict[couple[0]].getInfo()["alive"]:
+        g.node(couple[0], f"{couple[0]}\n{fatherDisease}\n{fatherOnset}", shape="square")
+    else:
+        fatherDeath = f"Died: {fatherInfo['death']}"
+        g.node(couple[0], f"{couple[0]}\n{fatherDisease}\n{fatherOnset}\n{fatherDeath}", shape="square", color="black", fontcolor="white", style="filled")
+    if personDict[couple[1]].getInfo()["alive"]:
+        g.node(couple[1], f"{couple[1]}\n{motherDisease}\n{motherOnset}", shape="circle")
+    else:
+        motherDeath = f"Died: {motherInfo['death']}"
+        g.node(couple[1], f"{couple[1]}\n{motherDisease}\n{motherOnset}\n{motherDeath}", shape="circle", color="black", fontcolor="white", style="filled")
+    g.edge(couple[0], couple[1], constraint="true")
+    coupleGraphList.append(g)
+
+childrenGraphList = []
+
+
+for idx, children in enumerate(childList):
+    g = Graph(name=children[0], format="png", node_attr={
+        "rank": "same",
+        "fixedsize": "true",
+        "width": f"{maxLength / 8}"
+    }, graph_attr={"rankdir": "LR"}, edge_attr={"concentrate": "true"})
+
+    for child in children:
+        childInfo = personDict[child].getInfo()
+        childDisease = ""
+        childOnset = ""
+        childDeath = ""
+        if type(childInfo["disease"]) is str:
+            childDisease = childInfo["disease"]
+            childOnset = childInfo["onset"]
+        if childInfo["sex"] == "M":
+            if childInfo["alive"]:
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}", shape="square")
+            else:
+                childDeath = childInfo["death"]
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}\n{childDeath}", shape="square", color="black", fontcolor="white", style="filled")
+        else:
+            if childInfo["alive"]:
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}", shape="circle")
+            else:
+                childDeath = childInfo["death"]
+                g.node(child, f"{child}\n{childDisease}\n{childOnset}\n{childDeath}", shape="circle", color="black", fontcolor="white", style="filled")
+    for i in range(1, len(children)):
+        g.edge(children[i - 1], children[i])
+
+    childrenGraphList.append(g)
+
+graphList = []
+for idx in range(len(coupleGraphList)):
+    parentG = coupleGraphList[idx]
+    childrenG = childrenGraphList[idx]
+    parentG.edge(childList[idx][0], parentList[idx][0], constraint="false")
+    parentG.edge(childList[idx][0], parentList[idx][1], constraint="false")
+    parentG.subgraph(childrenG)
+    graphList.append(parentG)
+
+
+G = Graph("combinedGraph", format="png", node_attr={"rank": "same"}, graph_attr={"rankdir": "TB"})
+for graph in graphList:
+    G.subgraph(graph)
+G.render(filename="graph", format="png", cleanup=True)
